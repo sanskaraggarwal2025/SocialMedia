@@ -2,7 +2,7 @@ const dotenv = require("dotenv")
 const jwt = require("jsonwebtoken")
 dotenv.config();
 
-const authMiddleware = async(req,res,next) =>{
+const authMiddleware = (req,res,next) =>{
     const myHeader = req.headers.authorization;
     
     if( !myHeader || !myHeader.startsWith("Bearer ") ){
@@ -21,4 +21,4 @@ const authMiddleware = async(req,res,next) =>{
     }
 }
 
-module.exports = authMiddleware;
+module.exports = {authMiddleware};
