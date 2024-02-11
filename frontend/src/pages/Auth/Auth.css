@@ -78,6 +78,9 @@
     width: 6rem;
     height: 2rem;
     align-self: flex-end;
+    color: black;
+    border: solid black;
+    border-radius: 2rem;
   }
   
   
