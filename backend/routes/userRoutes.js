@@ -28,6 +28,7 @@ router.post("/signup", async (req, res) => {
     return res.status(200).json({
       msg: "User created",
       token,
+      userId:userId,
     });
   } catch (err) {
     console.log(err);
@@ -56,6 +57,7 @@ router.post("/login", async (req, res) => {
     return res.status(200).json({
       msg: "user logged in",
       token,
+      userId:userId
     });
   } catch (err) {
     console.log(err);

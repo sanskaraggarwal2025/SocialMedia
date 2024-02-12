@@ -4,10 +4,12 @@ import Logo from "../../img/logo.png";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+import { useSetRecoilState } from "recoil";
+import { userAtom } from "../../store/atoms/authAtom";
 const Signup = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  let setUser = useSetRecoilState(userAtom);
   const onSubmit = async(data) => {
     // console.log(data);
     try{
@@ -19,6 +21,7 @@ const Signup = () => {
         }
       )
       localStorage.setItem("token",res.data.token);
+      setUser(res.data.userId); 
       navigate('/');
       console.log("response from server",res.data);
     }

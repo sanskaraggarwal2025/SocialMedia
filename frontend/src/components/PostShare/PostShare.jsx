@@ -6,25 +6,54 @@ import { UilPlayCircle } from "@iconscout/react-unicons";
 import { UilLocationPoint } from "@iconscout/react-unicons";
 import { UilSchedule } from "@iconscout/react-unicons";
 import { UilTimes } from "@iconscout/react-unicons";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../../store/atoms/authAtom";
+import axios from "axios";
 
 
 const PostShare = () => {
   const [image, setImage] = useState(null);
   const imageRef = useRef();
+  const desc = useRef();
+  const userId = useRecoilValue(userAtom);
+  console.log(userId);
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
-      setImage({
-        image: URL.createObjectURL(img),
-      });
+      setImage(img);
     }
   };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    
+    const newPost = {
+      userId:userId,
+      desc:desc.current.value
+    }
+    if(image){
+      const data = new FormData();
+      const filename = Date.now() + image.name;
+      data.append("name",filename);
+      data.append("file",image)
+      newPost.image = filename
+      console.log(newPost);
+      let res = await axios.post("http://localhost:8000/upload",newPost);
+    }
+    try{
+      console.log(res.data);
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+
   return (
     <div className="PostShare">
       <img src={ProfileImage} alt="" />
       <div>
-        <input type="text" placeholder="What's happening" />
+        <input ref = {desc} required type="text" placeholder="What's happening" />
         <div className="postOptions">
           <div className="option" style={{ color: "var(--photo)" }}
           onClick={()=>imageRef.current.click()}
@@ -44,7 +73,7 @@ const PostShare = () => {
             <UilSchedule />
             Shedule
           </div>
-          <button className="button ps-button">Share</button>
+          <button className="button ps-button" onClick={(e) => handleSubmit(e)}>Share</button>
           <div style={{ display: "none" }}>
             <input
               type="file"
@@ -58,7 +87,7 @@ const PostShare = () => {
 
         <div className="previewImage">
           <UilTimes onClick={()=>setImage(null)}/>
-          <img src={image.image} alt="" />
+          <img src={URL.createObjectURL(image)} alt="" />
         </div>
 
       )}

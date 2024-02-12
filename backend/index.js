@@ -6,6 +6,7 @@ app.use(cors());
 app.use(express.json());
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
+const uploadRouter = require("./routes/uploadRoute");
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -14,6 +15,7 @@ mongoose
 
 app.use("/user", userRouter);
 app.use("/post", postRouter);
+app.use("/upload", uploadRouter);
 
 app.listen(8000, () => {
   console.log("server connected at 8000");
