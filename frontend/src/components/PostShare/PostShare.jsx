@@ -39,9 +39,17 @@ const PostShare = () => {
       data.append("file",image)
       newPost.image = filename
       console.log(newPost);
-      let res = await axios.post("http://localhost:8000/upload",newPost);
+      let res = await axios.post("http://localhost:8000/upload",data);
+      console.log(res.data);
     }
     try{
+      const token = localStorage.getItem('token');
+      console.log(token);
+      let res = await axios.post("http://localhost:8000/post/",newPost,{
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
+      });
       console.log(res.data);
     }
     catch(err){

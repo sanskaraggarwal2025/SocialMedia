@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { Post } = require("../models/postModel");
+const { User } = require("../models/userModel");
+const mongoose = require("mongoose")
 const { authMiddleware } = require("../middlewares/authMiddleware");
 
 //create a post
@@ -96,6 +98,44 @@ router.put("/:id/like", authMiddleware, async (req, res) => {
   }
 });
 
-//timeline route is pending
+//timeline route 
+router.get('/:id/timeline',authMiddleware,async(req,res) => {
+  const userId = req.params.id;
+  try{
+    const currentUserPosts = await Post.find({userId:userId});
+    const followingPosts = await User.aggregate([
+      {
+        $match:{
+          _id:new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $lookup:{
+          from:"posts",
+          localField:"following",
+          foreignField:"userId",
+          as:"followingPosts",
+        },
+      },
+      {
+        $project: {
+          followingPosts: 1,
+          _id:0
+        },
+      },
+    ])
 
+    res.status(200).json(
+      currentUserPosts
+      .concat(...followingPosts[0].followingPosts)
+      .sort((a,b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt)
+      })
+    )
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json(err);
+  }
+})
 module.exports = router;
