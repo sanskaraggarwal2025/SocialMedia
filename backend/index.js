@@ -8,6 +8,9 @@ const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
 const uploadRouter = require("./routes/uploadRoute");
 
+app.use(express.static('public'))
+app.use('/images',express.static("images"))
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("db connected"))

@@ -6,8 +6,6 @@ import { UilPlayCircle } from "@iconscout/react-unicons";
 import { UilLocationPoint } from "@iconscout/react-unicons";
 import { UilSchedule } from "@iconscout/react-unicons";
 import { UilTimes } from "@iconscout/react-unicons";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../../store/atoms/authAtom";
 import axios from "axios";
 
 
@@ -15,8 +13,6 @@ const PostShare = () => {
   const [image, setImage] = useState(null);
   const imageRef = useRef();
   const desc = useRef();
-  const userId = useRecoilValue(userAtom);
-  console.log(userId);
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -24,7 +20,7 @@ const PostShare = () => {
       setImage(img);
     }
   };
-
+  const userId = localStorage.getItem('userId');
   const handleSubmit = async(e) => {
     e.preventDefault();
     
