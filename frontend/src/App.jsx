@@ -4,10 +4,11 @@ import Login from "./pages/Auth/Login";
 import Home from "./pages/home/Home";
 import Profile from "./pages/Profile/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
+import { userAtom } from "./store/atoms/authAtom";
 function App() {
+  const user = useRecoilValue(userAtom);
   return (
-    <RecoilRoot>
       <BrowserRouter>
         <div className="App">
           <div className="blur" style={{ top: "-18%", right: "0" }}></div>
@@ -17,10 +18,10 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path = "/profile/:id" element={user ? <Profile /> : <Login />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
-    </RecoilRoot>
   );
 }
 

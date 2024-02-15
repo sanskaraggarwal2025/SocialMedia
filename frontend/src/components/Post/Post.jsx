@@ -10,16 +10,13 @@ const Post = ({data}) => {
   const userId = localStorage.getItem("userId");
   const [liked,setLiked] = useState(data.likes.includes(userId));
   const [likes,setLikes] = useState(data.likes.length);
-  // console.log(data._id);
   const psid = data._id;
-  console.log(psid);
   let token = localStorage.getItem("token");
 
 
   const handleLike = async() => {
-    setLiked((prev) => !prev)
     try{
-
+      
       await axios.put(`http://localhost:8000/post/${psid}/like`,{},{
         headers:{
           'Authorization':`Bearer ${token}`
@@ -29,11 +26,14 @@ const Post = ({data}) => {
     catch(err) {
       console.log(err);
     }
+    setLiked((prev) => !prev)
     liked? setLikes((prev) => prev-1) : setLikes((prev)=>prev+1);
   }
   return (
     <div className="Post">
-        <img src={data.img? process.env.REACT_APP_PUBLIC_FOLDER + data.image: ""} alt="" />
+    {/* {console.log(data.image)} */}
+    {/* {console.log(process.env.REACT_APP_PUBLIC_FOLDER)} */}
+        <img src={data.image? 'http://localhost:8000/images/' + data.image: ""} alt="" />
 
 
         <div className="postReact">

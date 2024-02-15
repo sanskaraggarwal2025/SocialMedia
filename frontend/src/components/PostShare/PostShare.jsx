@@ -7,7 +7,8 @@ import { UilLocationPoint } from "@iconscout/react-unicons";
 import { UilSchedule } from "@iconscout/react-unicons";
 import { UilTimes } from "@iconscout/react-unicons";
 import axios from "axios";
-
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../../store/atoms/authAtom";
 
 const PostShare = () => {
   const [image, setImage] = useState(null);
@@ -20,47 +21,59 @@ const PostShare = () => {
       setImage(img);
     }
   };
-  const userId = localStorage.getItem('userId');
-  const handleSubmit = async(e) => {
+ 
+  const userId = localStorage.getItem("userId");
+  const user = useRecoilValue(userAtom);
+  const serverPublic = "http://localhost:8000/images/";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const newPost = {
-      userId:userId,
-      desc:desc.current.value
-    }
-    if(image){
+      userId: userId,
+      desc: desc.current.value,
+    };
+    if (image) {
       const data = new FormData();
       const filename = Date.now() + image.name;
-      data.append("name",filename);
-      data.append("file",image)
-      newPost.image = filename
+      data.append("name", filename);
+      data.append("file", image);
+      newPost.image = filename;
       console.log(newPost);
-      let res = await axios.post("http://localhost:8000/upload",data);
+      let res = await axios.post("http://localhost:8000/upload", data);
       console.log(res.data);
     }
-    try{
-      const token = localStorage.getItem('token');
+    try {
+      const token = localStorage.getItem("token");
       console.log(token);
-      let res = await axios.post("http://localhost:8000/post/",newPost,{
-        headers:{
-          'Authorization': `Bearer ${token}`
-        }
+      let res = await axios.post("http://localhost:8000/post/", newPost, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log(res.data);
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <div className="PostShare">
-      <img src={ProfileImage} alt="" />
+      <img
+        src={
+          user.profilePciture
+            ? serverPublic + user.profilePciture
+            : serverPublic + "defaultProfile.png"
+        }
+        alt=""
+      />
       <div>
-        <input ref = {desc} required type="text" placeholder="What's happening" />
+        <input ref={desc} required type="text" placeholder="What's happening" />
         <div className="postOptions">
-          <div className="option" style={{ color: "var(--photo)" }}
-          onClick={()=>imageRef.current.click()}
+          <div
+            className="option"
+            style={{ color: "var(--photo)" }}
+            onClick={() => imageRef.current.click()}
           >
             <UilScenery />
             Photo
@@ -77,7 +90,9 @@ const PostShare = () => {
             <UilSchedule />
             Shedule
           </div>
-          <button className="button ps-button" onClick={(e) => handleSubmit(e)}>Share</button>
+          <button className="button ps-button" onClick={(e) => handleSubmit(e)}>
+            Share
+          </button>
           <div style={{ display: "none" }}>
             <input
               type="file"
@@ -87,16 +102,12 @@ const PostShare = () => {
             />
           </div>
         </div>
-      {image && (
-
-        <div className="previewImage">
-          <UilTimes onClick={()=>setImage(null)}/>
-          <img src={URL.createObjectURL(image)} alt="" />
-        </div>
-
-      )}
-
-
+        {image && (
+          <div className="previewImage">
+            <UilTimes onClick={() => setImage(null)} />
+            <img src={URL.createObjectURL(image)} alt="" />
+          </div>
+        )}
       </div>
     </div>
   );

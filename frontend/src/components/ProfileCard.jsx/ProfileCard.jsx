@@ -1,19 +1,39 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import Cover from "../../img/cover.jpg";
 import Profile from "../../img/profileImg.jpg";
 import "./ProfileCard.css";
-
-const ProfileCard = () => {
-  const ProfilePage = true;
+import axios from "axios";
+import { useRecoilState ,useRecoilValue} from "recoil";
+import { postAtom, userAtom } from "../../store/atoms/authAtom";
+import { Link } from "react-router-dom";
+const ProfileCard = ({location}) => {
+  const[user,setUser] = useRecoilState(userAtom);
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  const posts = useRecoilValue(postAtom)
+  useEffect(() => {
+    const fetchUserData = async() => {
+      let res = await axios.get(`http://localhost:8000/user/${userId}`,{
+        headers:{
+          'Authorization':`Bearer ${token}`
+        },
+      })
+      console.log(posts);
+      setUser(res.data);
+    }
+    fetchUserData();
+  },[])
+  // console.log(user);
+  const serverPublic = 'http://localhost:8000/images/'
   return (
     <div className="ProfileCard">
       <div className="ProfileImages">
-        <img src={Cover} alt="" />
-        <img src={Profile} alt="" />
+        <img src={user.coverPicture? serverPublic + user.coverPicture : serverPublic + "defaultCover.jpg"} alt="" />
+        <img src={user.profilePciture? serverPublic + user.profilePciture : serverPublic + "defaultProfile.png"} alt="" />
       </div>
 
       <div className="ProfileName">
-        <span>Zendaya MJ</span>
+        <span>{user.firstname} {user.lastname}</span>
         <span>Senior UI/UX Designer</span>
       </div>
 
@@ -21,20 +41,20 @@ const ProfileCard = () => {
         <hr />
         <div>
           <div className="follow">
-            <span>6,890</span>
-            <span>Followings</span>
+            <span>{user && user.following.length}</span>
+            <span>Following</span>
           </div>
           <div className="vl"></div>
           <div className="follow">
-            <span>1</span>
+            <span>{user && user.followers.length}</span>
             <span>Followers</span>
           </div>
 
-          {ProfilePage && (
+          {location === 'profilePage' && (
             <>
               <div className="vl"></div>
               <div className="follow">
-                <span>3</span>
+                <span>{posts.length}</span>
                 <span>Posts</span>
               </div>
             </>
@@ -42,7 +62,11 @@ const ProfileCard = () => {
         </div>
         <hr />
       </div>
-      {ProfilePage ? "" : <span>My Profile</span>}
+      {location === 'profilePage'? "" : <span>
+      <Link style = {{textDecoration:"none", color: "inherit"}} to = {`/profile/${user._id}`}>
+        My Profile
+      </Link>
+      </span>}
     </div>
   );
 };

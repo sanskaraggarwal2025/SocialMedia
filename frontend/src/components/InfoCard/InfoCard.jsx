@@ -4,6 +4,10 @@ import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal.jsx/ProfileModal";
 
 const InfoCard = () => {
+  const logout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token")
+  }
   const [modalOpened, setModalOpened] = useState(false);
   return (
     <div className="InfoCard">
@@ -43,7 +47,7 @@ const InfoCard = () => {
         <span>Zainkeepscode inst</span>
       </div>
 
-      <button className="button logout-button">Logout</button>
+      <button className="button logout-button" onClick={logout}>Logout</button>
     </div>
   );
 };
