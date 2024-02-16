@@ -7,6 +7,8 @@ app.use(express.json());
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
 const uploadRouter = require("./routes/uploadRoute");
+const chatRouter = require("./routes/chatRoute");
+const messageRouter = require("./routes/messageRoute");
 
 app.use(express.static('public'))
 app.use('/images',express.static("images"))
@@ -18,6 +20,8 @@ mongoose
 
 app.use("/user", userRouter);
 app.use("/post", postRouter);
+app.use("/chat", chatRouter);
+app.use('/message',messageRouter);
 app.use("/upload", uploadRouter);
 
 app.listen(8000, () => {
