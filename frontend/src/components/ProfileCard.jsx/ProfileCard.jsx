@@ -7,23 +7,24 @@ import { useRecoilState ,useRecoilValue} from "recoil";
 import { postAtom, userAtom } from "../../store/atoms/authAtom";
 import { Link } from "react-router-dom";
 const ProfileCard = ({location}) => {
-  const[user,setUser] = useRecoilState(userAtom);
+  // const[user,setUser] = useRecoilState(userAtom);
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const posts = useRecoilValue(postAtom)
-  useEffect(() => {
-    const fetchUserData = async() => {
-      let res = await axios.get(`http://localhost:8000/user/${userId}`,{
-        headers:{
-          'Authorization':`Bearer ${token}`
-        },
-      })
-      console.log(posts);
-      setUser(res.data);
-    }
-    fetchUserData();
-  },[])
+  // useEffect(() => {
+  //   const fetchUserData = async() => {
+  //     let res = await axios.get(`http://localhost:8000/user/${userId}`,{
+  //       headers:{
+  //         'Authorization':`Bearer ${token}`
+  //       },
+  //     })
+  //     console.log(posts);
+  //     setUser(res.data);
+  //   }
+  //   fetchUserData();
+  // },[])
   // console.log(user);
+  let user = useRecoilValue(userAtom);
   const serverPublic = 'http://localhost:8000/images/'
   return (
     <div className="ProfileCard">

@@ -5,13 +5,15 @@ import Share from '../../img/share.png'
 import Heart from '../../img/like.png'
 import NotLike from '../../img/notlike.png'
 import axios from 'axios'
-
+import {useRecoilValue} from 'recoil';
+import {userAtom} from '../../store/atoms/authAtom'
 const Post = ({data}) => {
   const userId = localStorage.getItem("userId");
   const [liked,setLiked] = useState(data.likes.includes(userId));
   const [likes,setLikes] = useState(data.likes.length);
   const psid = data._id;
   let token = localStorage.getItem("token");
+  let user = useRecoilValue(userAtom)
 
 
   const handleLike = async() => {

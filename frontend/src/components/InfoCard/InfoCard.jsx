@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import "./InfoCard.css";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal.jsx/ProfileModal";
+import { useNavigate } from "react-router-dom";
 
 const InfoCard = () => {
+  const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("token")
+    navigate('/login')
   }
   const [modalOpened, setModalOpened] = useState(false);
   return (

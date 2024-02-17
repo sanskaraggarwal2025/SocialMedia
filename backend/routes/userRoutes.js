@@ -24,7 +24,7 @@ router.post("/signup", async (req, res) => {
 
     const userId = newUser._id;
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
     return res.status(200).json({
       msg: "User created",
@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
     const userId = isUser._id;
 
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
     return res.status(200).json({
       msg: "user logged in",
