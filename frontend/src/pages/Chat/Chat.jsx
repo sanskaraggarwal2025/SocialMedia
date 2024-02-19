@@ -15,7 +15,6 @@ const Chat = () => {
   let user = useRecoilValue(userAtom);
   let userId = localStorage.getItem("userId");
   let token = localStorage.getItem("token");
-  console.log(user);
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   useEffect(() => {
@@ -50,7 +49,7 @@ const Chat = () => {
       </div>
 
       <div className="Right-side-chat">
-        <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+        <div style={{ width: "70rem", alignSelf: "flex-end" }}>
           <div className="navIcons">
             <Link to="/">
               <img src={Home} alt="" />
