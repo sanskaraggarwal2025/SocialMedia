@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LogoSearch from "../../components/LogoSearch/LogoSearch";
 import "./Chat.css";
 import { useRecoilValue } from "recoil";
@@ -17,11 +17,54 @@ const Chat = () => {
   let token = localStorage.getItem("token");
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+  const [onlineUser, setOnlineUser] = useState([]);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [recieveMessage,setRecieveMessage] = useState(null);
+  const ws = useRef();
   
   useEffect(() => {
-    const ws = new WebSocket('http://localhost:8800')
+    console.log("chla kya ");
+    ws.current = new WebSocket("ws://localhost:8001");
 
-  })
+    ws.current.onopen = () => {
+      console.log("connecting to ws server");
+      ws.current.send(JSON.stringify({ type: "add-new-user", userId: userId }));
+    };
+
+    ws.current.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      handleMessage(message);
+      console.log(message);
+      console.log(message.data);
+      console.log(message.type);
+      console.log(onlineUser);
+      console.log("online aa sale");
+    };
+
+    ws.current.onclose = () => {
+      console.log("disconnected from ws server");
+    };
+
+    return () => {
+      ws.current.close();
+    };
+  }, [user]);
+
+  // useEffect(() => {
+  //   ws.current.on
+  // })
+
+  useEffect(() => {
+    if(sendMessage !== null){
+      console.log('mai nhi chla ');
+      ws.current.send(JSON.stringify({
+        type:'send-message',
+        payload:{
+          message:sendMessage
+        }
+      }))
+    }
+  },[sendMessage])
 
   useEffect(() => {
     const getChats = async () => {
@@ -38,6 +81,25 @@ const Chat = () => {
     };
     getChats();
   }, [user]);
+
+  const handleMessage = (message) => {
+    switch (message.type) {
+      case "get-user":
+        setOnlineUser(message.data);
+        break;
+      case 'recieve-message':
+        setRecieveMessage(message.data)
+      default:
+        break;
+    }
+  };
+
+  const checkOnlineStatus = (chat) => {
+    const chatMember = chat.members.find((member) => member !== userId)
+    const online = onlineUser.find((user) => user.userId === chatMember)
+    return online?true:false
+  }
+
   return (
     <div className="Chat">
       <div className="Left-side-chat">
@@ -46,8 +108,9 @@ const Chat = () => {
           <h2>Chats</h2>
           <div className="Chat-list">
             {chats.map((chat) => (
+              //setCurrentChat -> jisse tumhe chat krni hai
               <div onClick={() => setCurrentChat(chat)}>
-                <Conversation data={chat} currentUserId={userId} />
+                <Conversation data={chat} currentUserId={userId} online = {checkOnlineStatus(chat)}/>
               </div>
             ))}
           </div>
@@ -68,7 +131,12 @@ const Chat = () => {
           </div>
 
           {/* chat body */}
-          <ChatBox chat={currentChat} currentUserId={userId} />
+          <ChatBox
+            chat={currentChat}
+            currentUserId={userId}
+            setSendMessage={setSendMessage}
+            recieveMessage={recieveMessage} 
+          />
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 const WebSocket = require("ws");
-const wss = WebSocket.Server({ port: 8800 });
+const wss = new WebSocket.Server({ port: 8001 });
 
 //in-memory store of users
 let activeUsers = [];
@@ -11,6 +11,7 @@ let activeUsers = [];
 // ]
 
 wss.on("connection", async (ws, req) => {
+    console.log('connection established');
   ws.on("message", (message) => {
     const data = JSON.parse(message);
 
@@ -33,7 +34,11 @@ wss.on("connection", async (ws, req) => {
       // send all active users to all users
       broadcast({ type: "get-users", data: activeUsers });
     } else if (data.type === "send-message") {
-      const { recieverId, message } = data;
+      // const { recieverId, message } = data;
+      const { payload: { message: { recieverId, ...message } } } = data;
+      console.log(recieverId);
+      console.log(message);
+      console.log(data);
       const user = activeUsers.find((itr) => itr.userId === recieverId);
       console.log("sending message to ", recieverId);
       if (user) {
