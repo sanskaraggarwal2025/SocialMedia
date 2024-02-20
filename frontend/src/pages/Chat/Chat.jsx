@@ -17,6 +17,12 @@ const Chat = () => {
   let token = localStorage.getItem("token");
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+  
+  useEffect(() => {
+    const ws = new WebSocket('http://localhost:8800')
+
+  })
+
   useEffect(() => {
     const getChats = async () => {
       try {
