@@ -1,8 +1,8 @@
-const express = require("express");
+import  express from "express";
 const router = express.Router();
-const { Chat } = require("../models/chatModel");
-const { MessageModel } = require("../models/messageModel");
-const { authMiddleware } = require("../middlewares/authMiddleware");
+import  Chat  from "../models/chatModel";
+import  MessageModel  from "../models/messageModel";
+import  authMiddleware  from "../middlewares/authMiddleware";
 
 //add message
 router.post("/", authMiddleware, async (req, res) => {
@@ -34,4 +34,4 @@ router.get("/:chatId", authMiddleware, async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

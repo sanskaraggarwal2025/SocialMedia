@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,8 +20,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
-      // required:true,
+      type: String,      // required:true,
     },
     isAdmin: {
       type: Boolean,
@@ -38,6 +37,4 @@ const userSchema = new mongoose.Schema(
 );
 
 const User = mongoose.model("User", userSchema);
-module.exports = {
-  User,
-};
+export default User;

@@ -1,11 +1,11 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { User } = require("../models/userModel");
-const jwt = require("jsonwebtoken");
+import User from "../models/userModel";
+import jwt from "jsonwebtoken";
 
-const dotenv = require("dotenv");
+import * as dotenv from "dotenv";
 dotenv.config();
-const { authMiddleware } = require("../middlewares/authMiddleware");
+import authMiddleware from "../middlewares/authMiddleware";
 
 router.post("/signup", async (req, res) => {
   try {
@@ -23,13 +23,16 @@ router.post("/signup", async (req, res) => {
     });
 
     const userId = newUser._id;
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    let token = null;
+    if (process.env.JWT_SECRET) {
+      token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+    }
     return res.status(200).json({
       msg: "User created",
       token,
-      userId:userId,
+      userId: userId,
     });
   } catch (err) {
     console.log(err);
@@ -51,14 +54,16 @@ router.post("/login", async (req, res) => {
       return res.status(400).send("Invalid credentials");
     }
     const userId = isUser._id;
-
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    let token = null;
+    if (process.env.JWT_SECRET) {
+      token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+    }
     return res.status(200).json({
       msg: "user logged in",
       token,
-      userId:userId
+      userId: userId
     });
   } catch (err) {
     console.log(err);
@@ -72,7 +77,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
     if (!user) {
       return res.status(400).send("No such user");
     }
-    const { password, ...otherDetails } = user._doc;
+    const { password, ...otherDetails } = (user as any)._doc;
     res.status(200).json(otherDetails);
   } catch (err) {
     console.log(err);
@@ -82,9 +87,8 @@ router.get("/:id", authMiddleware, async (req, res) => {
 router.get("/", authMiddleware, async (req, res) => {
   try {
     let users = await User.find();
-    console.log(req.userId);
     users = users.map((user) => {
-      const { password, ...otherDetails } = user._doc;
+      const { password, ...otherDetails } = (user as any)._doc;
       return otherDetails;
     });
     return res.status(200).json(users);
@@ -96,10 +100,11 @@ router.get("/", authMiddleware, async (req, res) => {
 router.put("/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
   // const { currentUser, isAdmin } = req.body;
-  let currentUser = req.userId;
+  let userId = req.headers["userId"];
+  let currentUser = userId;
 
   try {
-    if (currentUser !== id || isAdmin) {
+    if (currentUser !== id) {
       //here might be a logic mistake
       return res.status(500).send("Access Denied");
     }
@@ -115,10 +120,11 @@ router.put("/:id", authMiddleware, async (req, res) => {
 router.delete("/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
   // const { currentUser, isAdmin } = req.body;
-  let currentUser = req.userId;
+  let userId = req.headers["userId"];
+  let currentUser = userId;
 
   try {
-    if (currentUser !== id || isAdmin) {
+    if (currentUser !== id) {
       return res.status(500).send("Access Denied");
     }
     await User.findByIdAndDelete(id);
@@ -131,7 +137,8 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 router.put("/:id/follow", authMiddleware, async (req, res) => {
   const id = req.params.id;
   // const { currentUserId } = req.body;
-  let currentUserId = req.userId;
+  let userId = req.headers["userId"];
+  let currentUserId = userId;
 
   if (id === currentUserId) {
     return res.status(500).send("you cannot follow yourself");
@@ -141,11 +148,11 @@ router.put("/:id/follow", authMiddleware, async (req, res) => {
     const followUser = await User.findById(id);
     const currentUser = await User.findById(currentUserId);
 
-    if (followUser.followers.includes(currentUserId)) {
+    if (followUser?.followers.includes(currentUserId)) {
       return res.status(500).send("you already follow this user");
     }
-    await followUser.updateOne({ $push: { followers: currentUserId } });
-    await currentUser.updateOne({ $push: { following: id } });
+    await followUser?.updateOne({ $push: { followers: currentUserId } });
+    await currentUser?.updateOne({ $push: { following: id } });
     return res.status(200).json("User followed!");
   } catch (err) {
     console.log(err);
@@ -155,7 +162,8 @@ router.put("/:id/follow", authMiddleware, async (req, res) => {
 router.put("/:id/unfollow", authMiddleware, async (req, res) => {
   const id = req.params.id;
   // const { currentUserId } = req.body;
-  let currentUserId = req.userId;
+  let userId = req.headers["userId"];
+  let currentUserId = userId;
 
   if (id === currentUserId) {
     return res.status(500).send("You cannot unfollow yourself");
@@ -164,18 +172,18 @@ router.put("/:id/unfollow", authMiddleware, async (req, res) => {
     const unfollowUser = await User.findById(id);
     const currentUser = await User.findById(currentUserId);
 
-    if (!unfollowUser.followers.includes(currentUserId)) {
+    if (!unfollowUser?.followers.includes(currentUserId)) {
       return res.status(403).send("you are not following this id");
     }
 
-    await unfollowUser.updateOne({
+    await unfollowUser?.updateOne({
       $pull: { followers: currentUserId },
     });
-    await currentUser.updateOne({ $pull: { following: id } });
+    await currentUser?.updateOne({ $pull: { following: id } });
     return res.status(200).send("unfollowed successfully");
   } catch (err) {
     console.log(err);
   }
 });
 
-module.exports = router;
+export default router;

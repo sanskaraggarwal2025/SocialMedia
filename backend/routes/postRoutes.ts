@@ -1,16 +1,18 @@
-const express = require("express");
+import  express from "express";
 const router = express.Router();
-const { Post } = require("../models/postModel");
-const { User } = require("../models/userModel");
-const mongoose = require("mongoose")
-const { authMiddleware } = require("../middlewares/authMiddleware");
+import Post  from "../models/postModel";
+import  User  from "../models/userModel";
+import  mongoose from "mongoose"
+import  authMiddleware  from "../middlewares/authMiddleware";
 
 //create a post
 router.post("/", authMiddleware, async (req, res) => {
+  const userId = req.headers["userId"];
+
   const { desc, image } = req.body;
   try {
     const newPost = await Post.create({
-      userId: req.userId,
+      userId: userId,
       desc: desc,
       image: image,
     });
@@ -46,16 +48,17 @@ router.get("/:id", authMiddleware, async (req, res) => {
 
 //update a post
 router.put("/:id", authMiddleware, async (req, res) => {
+  const userId = req.headers["userId"];
   const postId = req.params.id;
-  const userId = req.userId;
+  // const userId = req.userId;
   try {
     const post = await Post.findById(postId);
-    let psid = post.userId;
-    let psidValue = psid.valueOf();
+    let psid = post?.userId;
+    let psidValue = psid?.valueOf();
     if (psidValue !== userId) {
       return res.status(500).send("access denied");
     }
-    await post.updateOne({ $set: req.body });
+    await post?.updateOne({ $set: req.body });
     return res.status(500).send("post updated");
   } catch (err) {
     console.log(err);
@@ -66,10 +69,10 @@ router.put("/:id", authMiddleware, async (req, res) => {
 //delete a post
 router.delete("/:id", authMiddleware, async (req, res) => {
   const postId = req.params.id;
-  const userId = req.userId;
+  const userId = req.headers["userId"];
   try {
     const post = await Post.findById(postId);
-    if (post.userId !== userId) {
+    if (post?.userId !== userId) {
       return res.status(500).send("access denied");
     }
     await Post.findByIdAndDelete(postId);
@@ -83,14 +86,16 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 // like/dislike a post
 router.put("/:id/like", authMiddleware, async (req, res) => {
   const postId = req.params.id;
-  const userId = req.userId;
+  // const userId = req.userId;
+  const userId = req.headers["userId"];
+
   try {
     const post = await Post.findById(postId);
-    if (post.likes.includes(userId)) {
+    if (post?.likes.includes(userId)) {
       await post.updateOne({ $pull: { likes: userId } });
       return res.status(200).send("Post Disliked");
     }
-    await post.updateOne({ $push: { likes: userId } });
+    await post?.updateOne({ $push: { likes: userId } });
     return res.status(500).send("Post Liked");
   } catch (err) {
     console.log(err);
@@ -129,7 +134,7 @@ router.get('/:id/timeline',authMiddleware,async(req,res) => {
       currentUserPosts
       .concat(...followingPosts[0].followingPosts)
       .sort((a,b) => {
-        return new Date(b.createdAt) - new Date(a.createdAt)
+        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
       })
     )
   }
@@ -138,4 +143,4 @@ router.get('/:id/timeline',authMiddleware,async(req,res) => {
     res.status(500).json(err);
   }
 })
-module.exports = router;
+export default router;

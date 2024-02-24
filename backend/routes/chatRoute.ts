@@ -1,11 +1,11 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { Chat } = require("../models/chatModel");
-const { authMiddleware } = require("../middlewares/authMiddleware");
-
+import  Chat  from "../models/chatModel";
+import  authMiddleware  from "../middlewares/authMiddleware";
 router.post("/", authMiddleware, async (req, res) => {
+  const userId = req.headers["userId"];
   const newChat = new Chat({
-    members: [req.userId, req.body.recieverId],
+    members: [userId, req.body.recieverId],
   });
   // console.log(newChat.members);
   try {
@@ -42,4 +42,4 @@ router.get("/find/:firstId/:secondId", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
