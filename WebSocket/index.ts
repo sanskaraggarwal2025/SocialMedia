@@ -1,8 +1,13 @@
-const WebSocket = require("ws");
+import WebSocket from "ws";
 const wss = new WebSocket.Server({ port: 8001 });
 
 //in-memory store of users
-let activeUsers = [];
+interface userType {
+  userId: string;
+  wsConn: WebSocket;
+}
+
+let activeUsers: userType[] = [];
 //activeUser = [
 //     {
 //         userId,
@@ -11,9 +16,9 @@ let activeUsers = [];
 // ]
 
 wss.on("connection", async (ws, req) => {
-    console.log('connection established');
-  ws.on("message", (message) => {
-    const data = JSON.parse(message);
+  console.log('connection established');
+  ws.on("message", (message: WebSocket.Data) => {
+    const data = JSON.parse(message.toString());
 
     //add new user to server
     if (data.type === "add-new-user") {
@@ -36,20 +41,27 @@ wss.on("connection", async (ws, req) => {
     } else if (data.type === "send-message") {
       // const { recieverId, message } = data;
       const { payload: { message: { recieverId, ...message } } } = data;
-      console.log(recieverId);
-      console.log(message);
+      // console.log(recieverId);
+      // console.log(message);
       console.log(data);
+      console.log('user dhund');
+
       const user = activeUsers.find((itr) => itr.userId === recieverId);
-      console.log("sending message to ", recieverId);
+      console.log('48', user?.userId);
+
+      // console.log("sending message to ", recieverId);
       if (user) {
+        console.log('tu kyu ni chlra');
         user.wsConn.send(
           JSON.stringify({ type: "recieve-message", data: message })
+
         );
+        console.log('bhj dia')
       }
     }
   });
 });
-function broadcast(message) {
+function broadcast(message: any) {
   activeUsers.forEach((user) => {
     user.wsConn.send(JSON.stringify(message));
   });
