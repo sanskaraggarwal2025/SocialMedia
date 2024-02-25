@@ -56,7 +56,6 @@ wss.on("connection", async (ws, req) => {
           JSON.stringify({ type: "recieve-message", data: message })
 
         );
-        console.log('bhj dia')
       }
     }
   });

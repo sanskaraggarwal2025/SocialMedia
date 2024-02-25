@@ -5,7 +5,7 @@
 
 .Search{
     display: flex;
-    background-color: var(--inputColor);
+    background-color: white;
     border-radius: 10px;
     padding: 5px;
 }
@@ -20,7 +20,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(106.23deg, #f99827, #f95f35 100%);
+    background: black;
     border-radius: 5px;
     padding: 4px;
     color: white;
