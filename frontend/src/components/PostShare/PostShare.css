@@ -1,8 +1,11 @@
 .PostShare{
     display: flex;
     gap: 1rem;
-    background-color: var(--cardColor);
+    /* background-color: var(--cardColor); */
+    background-color: black;
+    color: white;
     padding: 1rem;
+    border: 1px solid green;
     border-radius: 1rem;
 }
 
@@ -20,7 +23,8 @@
 }
 
 .PostShare>div>input{
-    background-color: var(--inputColor);
+    /* background-color: var(--inputColor); */
+    background-color: rgb(75, 72, 72);
     border-radius: 10px;
     padding: 10px;
     font-size: 17px;

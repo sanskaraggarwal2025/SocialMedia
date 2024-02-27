@@ -1,4 +1,4 @@
-/* :root {
+:root {
     --yellow: #f5c32c;
     --orange: #fca61f;
     --black: #242d49;
@@ -15,7 +15,7 @@
   }
   
   .App{
-    /* overflow: hidden; */
+    overflow: hidden;
     color: var(--black);
     background: black;
     padding: 1rem 1rem ;
@@ -26,7 +26,7 @@
     width: 22rem;
     height: 14rem;
     border-radius: 50%;
-    /* background: #a6ddf0; */
+    background: #a6ddf0;
     filter: blur(72px)
   }
   
@@ -50,8 +50,4 @@
   
   ::-webkit-scrollbar{
     display: none;
-  } */
-
-  /* {
-    background-color: black;
-  }  */
+  } 

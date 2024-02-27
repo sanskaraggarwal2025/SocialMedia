@@ -3,7 +3,10 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    background-color: var(--cardColor);
+    /* background-color: var(--cardColor); */
+     background-color: black; 
+    color: white; 
+    border: 1px solid green;
     border-radius: 1rem;
     gap: 1rem;
 }

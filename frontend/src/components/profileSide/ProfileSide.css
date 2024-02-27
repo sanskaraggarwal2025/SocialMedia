@@ -4,4 +4,6 @@
     gap: 1rem;
     align-items: center;
     overflow: auto;
+    background-color: black;
+    padding: 0px 8px 0px 8px;
 }

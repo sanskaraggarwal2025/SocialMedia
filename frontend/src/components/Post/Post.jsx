@@ -39,13 +39,13 @@ const Post = ({data}) => {
 
 
         <div className="postReact">
-            <img src={liked?Heart: NotLike} alt="" style = {{cursor:"pointer"}} onClick={handleLike}/>
+            <img src={liked?Heart: NotLike} alt="" style = {{cursor:"pointer", color:"white"}} onClick={handleLike}/>
             <img src={Comment} alt="" />
             <img src={Share} alt="" />
         </div>
 
 
-        <span style={{color: "var(--gray)", fontSize: '12px'}}>{likes} likes</span>
+        <span style={{color: "white", fontSize: '12px'}}>{likes} likes</span>
 
         <div className="detail">
             <span><b>{data.name}</b></span>

@@ -5,10 +5,16 @@
     position: relative;
     gap: 1rem;
     overflow-x: clip;
-    background: var(--cardColor);
+    /* background: var(--cardColor); */
+    background-color: black;
+    border: 1px solid green;
+
+    color: white;
+
 }
 
 .ProfileImages{
+  border-color: white;
     position: relative;
     display: flex;
     flex-direction: column;

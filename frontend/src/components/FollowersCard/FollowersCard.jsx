@@ -22,7 +22,7 @@ const FollowersCard = () => {
     fetchData();
   }, []);
   return (
-    <div className="FollowersCard">
+    <div className="FollowersCard" >
       <h3>People you may know</h3>
 
       {people.map((person, id) => {

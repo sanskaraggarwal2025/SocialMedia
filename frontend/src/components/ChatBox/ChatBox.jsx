@@ -112,7 +112,7 @@ const ChatBox = ({ chat, currentUserId, setSendMessage, recieveMessage }) => {
                   </div>
                 </div>
               </div>
-              <hr style={{ width: "85%", border: "0.1px solid #ececec" }} />
+              {/* <hr style={{ width: "85%", border: "0.1px solid #ececec" }} /> */}
             </div>
 
             {/* ChatBox Messages */}

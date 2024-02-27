@@ -4,7 +4,7 @@ import InfoCard from '../InfoCard/InfoCard'
 import LogoSearch from '../LogoSearch/LogoSearch'
 const ProfileLeft = () => {
   return (
-   <div className="ProfileSide">
+   <div className="ProfileSide" style={{backgroundColor:"black"}}>
        <LogoSearch/>
        <InfoCard/>
        <FollowersCard/>
