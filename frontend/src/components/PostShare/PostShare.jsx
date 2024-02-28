@@ -7,11 +7,13 @@ import { UilLocationPoint } from "@iconscout/react-unicons";
 import { UilSchedule } from "@iconscout/react-unicons";
 import { UilTimes } from "@iconscout/react-unicons";
 import axios from "axios";
-import { useRecoilValue } from "recoil";
+import { useRecoilState,useRecoilValue } from "recoil";
 import { userAtom } from "../../store/atoms/authAtom";
+import {sharePostAtom} from '../../store/atoms/authAtom';
 
 const PostShare = () => {
   const [image, setImage] = useState(null);
+  const [isRender,setIsRender] = useRecoilState(sharePostAtom)
   const imageRef = useRef();
   const desc = useRef();
 
@@ -51,11 +53,18 @@ const PostShare = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      setIsRender(!isRender);
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
+    resetComponent();
   };
+
+  const resetComponent = () => {
+    setImage(null);
+    desc.current.value = "";
+  }
 
   return (
     <div className="PostShare">

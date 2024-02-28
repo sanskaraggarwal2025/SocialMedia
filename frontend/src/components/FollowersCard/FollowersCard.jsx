@@ -22,8 +22,9 @@ const FollowersCard = () => {
     fetchData();
   }, []);
   return (
+    <>
+      <h3 style={{color:"white"}}>People you may know</h3>
     <div className="FollowersCard" >
-      <h3>People you may know</h3>
 
       {people.map((person, id) => {
         if (person._id !== user._id) {
@@ -31,6 +32,7 @@ const FollowersCard = () => {
         }
       })}
     </div>
+    </>
   );
 };
 

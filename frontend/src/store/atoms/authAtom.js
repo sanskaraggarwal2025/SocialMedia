@@ -29,3 +29,10 @@ export const followAtom = atom({
     effects_UNSTABLE: [persistAtom],
 
 })
+
+export const sharePostAtom = atom ({
+    key:"sharePostAtom",
+    default:{
+        value:false
+    }
+})

@@ -25,11 +25,16 @@
 .PostShare>div>input{
     /* background-color: var(--inputColor); */
     background-color: rgb(75, 72, 72);
+    color: white;
     border-radius: 10px;
     padding: 10px;
     font-size: 17px;
     border: none;
     outline: none;
+
+}
+.PostShare>div>input::placeholder{
+    color: white;
 }
 
 

@@ -3,9 +3,12 @@ import "./Posts.css";
 import { PostsData } from "../../Data/PostsData";
 import Post from "../Post/Post";
 import axios from "axios";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue,useSetRecoilState } from "recoil";
 import { postAtom } from "../../store/atoms/authAtom";
+import {sharePostAtom} from '../../store/atoms/authAtom';
+
 const Posts = () => {
+  let isRender = useRecoilValue(sharePostAtom);
   let userId = localStorage.getItem("userId");
   let token = localStorage.getItem("token");
   let [pdata, setPdata] = useState([]);
@@ -28,7 +31,7 @@ const Posts = () => {
   };
   useEffect(() => {
     getTimeline();
-  }, []);
+  }, [isRender]);
   return (
     <>
       <div className="Posts">

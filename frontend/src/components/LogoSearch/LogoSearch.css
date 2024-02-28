@@ -16,8 +16,12 @@
 .Search>input{
     background-color: transparent;
     border:none;
+    color: white;
     outline: none;
 
+}
+.Search>input::placeholder{
+    color:white
 }
 
 .s-icon{

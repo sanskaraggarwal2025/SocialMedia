@@ -5,10 +5,10 @@ import { useRecoilValue } from "recoil";
 import { userAtom } from "../../store/atoms/authAtom";
 import axios from "axios";
 import Conversation from "../../components/Conversation/Conversation";
-import { UilSetting } from "@iconscout/react-unicons";
 import Home from "../../img/home.png";
 import Noti from "../../img/noti.png";
 import Comment from "../../img/comment.png";
+import Setting from "../../img/setting.png";
 import { Link } from "react-router-dom";
 import ChatBox from "../../components/ChatBox/ChatBox";
 const Chat = () => {
@@ -123,7 +123,8 @@ const Chat = () => {
             <Link to="/">
               <img src={Home} alt="" />
             </Link>
-            <UilSetting />
+            {/* <UilSetting /> */}
+            <img src={Setting} alt="" />
             <img src={Noti} alt="" />
             <Link to="/chat">
               <img src={Comment} alt="" />

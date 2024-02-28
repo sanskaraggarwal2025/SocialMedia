@@ -39,9 +39,9 @@ const Post = ({data}) => {
 
 
         <div className="postReact">
-            <img src={liked?Heart: NotLike} alt="" style = {{cursor:"pointer", color:"white"}} onClick={handleLike}/>
-            <img src={Comment} alt="" />
-            <img src={Share} alt="" />
+            <img src={liked?Heart: NotLike} alt="" style = {{cursor:"pointer", color:"white",width:'25px',height:'25px'}} onClick={handleLike} />
+            <img src={Comment} alt="" style={{width:'25px',height:'25px' }}/>
+            <img src={Share} alt="" style={{width:'25px',height:'25px' }}/>
         </div>
 
 
