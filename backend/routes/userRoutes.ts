@@ -99,14 +99,14 @@ router.get("/", authMiddleware, async (req, res) => {
 
 router.put("/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
-  // const { currentUser, isAdmin } = req.body;
+  // const { currentUser } = req.body;
   let userId = req.headers["userId"];
   let currentUser = userId;
 
   try {
     if (currentUser !== id) {
       //here might be a logic mistake
-      return res.status(500).send("Access Denied");
+      return res.status(500).send("Access Denied kaha hora hai bc");
     }
     await User.findByIdAndUpdate(id, req.body);
     res.status(200).json({

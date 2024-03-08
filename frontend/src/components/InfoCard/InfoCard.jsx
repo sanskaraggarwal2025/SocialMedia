@@ -1,22 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./InfoCard.css";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal.jsx/ProfileModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../../store/atoms/authAtom";
 
 const InfoCard = () => {
   const navigate = useNavigate();
+  const params = useParams();
+  const profileUserId = params.id;
+  const user = useRecoilValue(userAtom);
+  const [profileUser,setProfileUser] = useState({});
+  useEffect(() => {
+    const fetchProfileUser = async() => {
+      if(profileUserId === user._id){
+        setProfileUser(user) 
+      }
+      else{
+        //atleast do something
+        let res = await axios.get(`http://localhost:8000/user/${profileUserId}`,{
+          headers:{
+            Authorization:'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        console.log(res.data);
+        setProfileUser(res.data);
+      }
+    }
+    fetchProfileUser();
+  },[user])
+  const [modalOpened, setModalOpened] = useState(false);
   const logout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("token")
     navigate('/login')
   }
-  const [modalOpened, setModalOpened] = useState(false);
   return (
     <div className="InfoCard">
       <div className="infoHead">
-        <h4>Your Info</h4>
-        <div>
+        <h4>Profile Info</h4>
+        {user._id === profileUserId ?<div>
           <UilPen
             width="2rem"
             height="1.2rem"
@@ -25,29 +49,31 @@ const InfoCard = () => {
           <ProfileModal
             modalOpened={modalOpened}
             setModalOpened={setModalOpened}
+            data={user}
           />
-        </div>
+        </div>:" "}
+        
       </div>
 
       <div className="info">
         <span>
           <b>Status </b>
         </span>
-        <span>in Relationship</span>
+        <span>{profileUser.relationship}</span>
       </div>
 
       <div className="info">
         <span>
           <b>Lives in </b>
         </span>
-        <span>Multan</span>
+        <span>{profileUser.livesIn}</span>
       </div>
 
       <div className="info">
         <span>
           <b>Works at </b>
         </span>
-        <span>Zainkeepscode inst</span>
+        <span>{profileUser.worksAt}</span>
       </div>
 
       <button className="button logout-button" onClick={logout}>Logout</button>
