@@ -11,18 +11,7 @@ const ProfileCard = ({location}) => {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const posts = useRecoilValue(postAtom)
-  // useEffect(() => {
-  //   const fetchUserData = async() => {
-  //     let res = await axios.get(`http://localhost:8000/user/${userId}`,{
-  //       headers:{
-  //         'Authorization':`Bearer ${token}`
-  //       },
-  //     })
-  //     console.log(posts);
-  //     setUser(res.data);
-  //   }
-  //   fetchUserData();
-  // },[])
+ 
   // console.log(user);
   let user = useRecoilValue(userAtom);
   const serverPublic = 'http://localhost:8000/images/'
@@ -35,19 +24,19 @@ const ProfileCard = ({location}) => {
 
       <div className="ProfileName">
         <span>{user.firstname} {user.lastname}</span>
-        <span>Senior UI/UX Designer</span>
+        <span>Tumhara Bhai Hero Hai</span>
       </div>
 
       <div className="followStatus">
         <hr />
         <div>
           <div className="follow">
-            {/* <span>{user && user.following.length}</span> */}
+            <span>{user && user.following.length}</span>
             <span>Following</span>
           </div>
           <div className="vl"></div>
           <div className="follow">
-            {/* <span>{user && user.followers.length}</span> */}
+            <span>{user && user.followers.length}</span>
             <span>Followers</span>
           </div>
 

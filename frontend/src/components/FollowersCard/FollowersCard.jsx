@@ -7,7 +7,8 @@ import { useRecoilValue } from "recoil";
 import { userAtom } from "../../store/atoms/authAtom";
 const FollowersCard = () => {
   const [people, setPeople] = useState([]);
-  const user = useRecoilValue(userAtom)
+  const user = useRecoilValue(userAtom);
+  console.log(user);
   const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchData = async () => {

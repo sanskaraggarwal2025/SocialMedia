@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { followAtom } from "../../store/atoms/authAtom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { followAtom, userAtom } from "../../store/atoms/authAtom";
 
 const User = ({ person }) => {
+  const user = useRecoilValue(userAtom);
+  // console.log(user);
   const serverPublic = "http://localhost:8000/images/";
   let followUserId = person._id;
   let token = localStorage.getItem("token");
@@ -40,6 +42,9 @@ const User = ({ person }) => {
       setFollowing((pre) => !pre)
       console.log(ufReq.data);
   }
+
+  let arr = user.following;
+
   return (
     <div className="follower">
       <div>
@@ -54,10 +59,10 @@ const User = ({ person }) => {
         />
         <div className="name">
           <span>{person.firstname}</span>
-          <span>{person.username}</span>
+          {/* <span>{person.username}</span> */}
         </div>
       </div>
-      {following ? (
+      {arr.includes(person._id) ? (
         <button className="button fc-button" onClick={handleUnfollow}>
           {/* {following? "Unfollow":"Follow"} */} Unfollow
         </button>
@@ -66,6 +71,7 @@ const User = ({ person }) => {
           {/* {following? "Unfollow":"Follow"} */} follow
         </button>
       )}
+
     </div>
   );
 };

@@ -108,7 +108,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
       //here might be a logic mistake
       return res.status(500).send("Access Denied kaha hora hai bc");
     }
-    let updatedUser = await User.findByIdAndUpdate(id, req.body,{new:true});
+    let updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
     res.status(200).json({
       updatedUser
     });
@@ -153,7 +153,11 @@ router.put("/:id/follow", authMiddleware, async (req, res) => {
     }
     await followUser?.updateOne({ $push: { followers: currentUserId } });
     await currentUser?.updateOne({ $push: { following: id } });
-    return res.status(200).json("User followed!");
+    let updatedList = await User.findById(currentUserId);
+    return res.status(200).json({
+       msg: "User followed!", 
+       followList:updatedList?.following,
+       });
   } catch (err) {
     console.log(err);
   }
@@ -180,7 +184,12 @@ router.put("/:id/unfollow", authMiddleware, async (req, res) => {
       $pull: { followers: currentUserId },
     });
     await currentUser?.updateOne({ $pull: { following: id } });
-    return res.status(200).send("unfollowed successfully");
+    let updatedList = await User.findById(currentUserId);
+
+    return res.status(200).json({
+      msg: "User unfollowed!", 
+      followList:updatedList?.following,
+      });
   } catch (err) {
     console.log(err);
   }

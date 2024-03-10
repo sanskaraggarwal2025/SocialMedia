@@ -78,6 +78,8 @@
     justify-content: center;
   }
   .follow > span:nth-of-type(1) {
+    font-size: 23px;
+    
     font-weight: bold;
   }
   
