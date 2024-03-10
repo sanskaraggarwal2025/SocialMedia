@@ -108,9 +108,9 @@ router.put("/:id", authMiddleware, async (req, res) => {
       //here might be a logic mistake
       return res.status(500).send("Access Denied kaha hora hai bc");
     }
-    await User.findByIdAndUpdate(id, req.body);
+    let updatedUser = await User.findByIdAndUpdate(id, req.body,{new:true});
     res.status(200).json({
-      msg: "user updated successfully",
+      updatedUser
     });
   } catch (err) {
     console.log(err);

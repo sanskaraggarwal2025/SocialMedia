@@ -1,5 +1,5 @@
 import { Modal, useMantineTheme } from "@mantine/core";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userAtom } from "../../store/atoms/authAtom";
 import axios from "axios";
 import { useState } from "react";
@@ -10,7 +10,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
   const [formData, setFormData] = useState(other);
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
-  const user = useRecoilValue(userAtom);
+  const updateUser = useSetRecoilState(userAtom);
   const param = useParams();
   const id = param.id;
   const handleChange = (e) => {
@@ -65,7 +65,8 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
+      console.log(res.data.updatedUser);
+      updateUser(res.data.updatedUser)
     } catch (err) {
       console.log(err);
     }

@@ -3,8 +3,8 @@ import "./InfoCard.css";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal.jsx/ProfileModal";
 import { useNavigate,useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../../store/atoms/authAtom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { infoCardAtom, userAtom } from "../../store/atoms/authAtom";
 
 const InfoCard = () => {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ const InfoCard = () => {
   const profileUserId = params.id;
   const user = useRecoilValue(userAtom);
   const [profileUser,setProfileUser] = useState({});
+  // const [profileUser,setProfileUser] = useRecoilState(infoCardAtom);
   useEffect(() => {
     const fetchProfileUser = async() => {
       if(profileUserId === user._id){
@@ -52,7 +53,6 @@ const InfoCard = () => {
             data={user}
           />
         </div>:" "}
-        
       </div>
 
       <div className="info">

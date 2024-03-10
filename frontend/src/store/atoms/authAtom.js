@@ -36,3 +36,10 @@ export const sharePostAtom = atom ({
         value:false
     }
 })
+
+export const infoCardAtom = atom({
+    key:"infoCardAtom",
+    default:{
+        value:{},
+    }
+})
