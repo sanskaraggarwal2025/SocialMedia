@@ -5,7 +5,7 @@ import Home from "./pages/home/Home";
 import Profile from "./pages/Profile/Profile";
 import Chat from './pages/Chat/Chat'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { RecoilRoot, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userAtom } from "./store/atoms/authAtom";
 function App() {
   const user = useRecoilValue(userAtom);

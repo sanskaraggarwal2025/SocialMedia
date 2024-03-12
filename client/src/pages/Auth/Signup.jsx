@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import "./Auth.css";
 import './Signup.css'
 // import Logo from "../../img/logo.png";
-import Logo from "../../assets/sc.webp";
+// import Logo from "../../assets/sc.webp";
 
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -92,7 +92,6 @@ const Signup = () => {
       <div className="sign-card">
         <div className="card-title">
           <h1>SocialMedia</h1>
-          <img src={Logo} alt="" srcset="" />
         </div>
         <div className="form-container">
           <form onSubmit={handleSubmit(onSubmit)}>

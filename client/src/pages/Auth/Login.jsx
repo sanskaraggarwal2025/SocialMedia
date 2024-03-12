@@ -1,7 +1,7 @@
 import React from "react";
 // import "./Auth.css";
 import "./Login.css";
-import Logo from "../../assets/sc.webp";
+// import Logo from "../../assets/sc.webp";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -75,7 +75,6 @@ const Login = () => {
         <div className="card">
           <div className="card-title">
             <h1>SocialMedia</h1>
-            <img src={Logo} alt="" srcset="" />
           </div>
           <div className="form-container">
             <form
