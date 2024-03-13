@@ -84,7 +84,8 @@
   }
   
   .follow > span:nth-of-type(2) {
-    color: var(--gray);
+    /* color: var(--gray); */
+    color: white;
     font-size: 13px;
   }
   
