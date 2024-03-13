@@ -6,11 +6,11 @@
 
 .sign-card{
     position: relative;
-    top: 1px;
+    top: 2px;
     left: 550px;
-    bottom: 30px;
+    bottom: 20px;
     width: 450px;
-    height: 700px;
+    height: 600px;
     display: flex;
     flex-direction: column;
     text-align: center;
