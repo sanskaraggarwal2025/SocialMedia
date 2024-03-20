@@ -18,3 +18,5 @@ This project is a social media web application where users can connect with thei
 - **Node.js**: Server-side JavaScript runtime environment.
 - **ws Library**: Lightweight WebSocket library for real-time chat functionality.
 - **recoil**: State management library for React applications.
+
+## Deployment
