@@ -20,3 +20,12 @@ This project is a social media web application where users can connect with thei
 - **recoil**: State management library for React applications.
 
 ## Deployment
+
+### Backend Deployment on EC2 Instance
+**EC2 Instance Setup**:
+   - Launch an EC2 instance on AWS.
+   - Configure security groups to allow traffic on the required ports (e.g., 80 for HTTP, 443 for HTTPS, and any other port your backend server is using).
+   - SSH into the instance and install necessary dependencies (Node.js, npm, MongoDB, etc.).
+
+
+
