@@ -27,5 +27,19 @@ This project is a social media web application where users can connect with thei
    - Configure security groups to allow traffic on the required ports (e.g., 80 for HTTP, 443 for HTTPS, and any other port your backend server is using).
    - SSH into the instance and install necessary dependencies (Node.js, npm, MongoDB, etc.).
 
+### Frontend Deployment on S3 with CDNs
+
+**Build the React Application**:
+   - Ensure your React application is properly configured for production deployment.
+   - Build the application using `npm run build`.
+
+**S3 Bucket Setup**:
+   - Create an S3 bucket on AWS to host your frontend application.
+   - Configure the bucket for static website hosting.
+
+**Upload Frontend Files to S3**:
+   - Upload the contents of the `build` folder (generated in step 1) to your S3 bucket.
+
+
 
 
